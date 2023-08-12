@@ -31,10 +31,6 @@ def get_shortterm_and_plot():
     data = estimate.get_sterms(industry=industry)
     return render_template('estimate_shortterm.html',data=data[:24]) #24小時data
     
-    
-    # data = estimate.get_sterms(industry=industry)
-    # estimate.plot_shorttrem(data, industry)
-    # return render_template('estimate_shortterm.html')
 
 @app.route('/longterm_est', methods=['GET','POST'])
 def get_longterm_and_plot():

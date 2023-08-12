@@ -14,7 +14,7 @@ time = '2023-08'
 df['time'] = pd.to_datetime(df['time'],format='%Y/%m/%d')
 df =df[df['time'].dt.strftime('%Y-%m') == time]
 df = df[df['industry'] == '金屬製造業']
-print(df.head())
+# print(df.head())
 
 # data = estimate.get_lterms(industry='ind3',time='2023-08')
 # data = estimate.get_lterms(industry='ind3',time='2023-09')

@@ -2,6 +2,9 @@
 {% block head %}
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
 <style>
     #main{
         width: 95%;
@@ -17,6 +20,58 @@
         border: 1px solid #999;
         /* background-color: #333; */
     }
+    #container{
+        max-width: 1200px;
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
+    }
+    h1{
+        width: 50%;
+    }
+    h2{
+        font-size: 20px;
+        text-align: right;
+    }
+    #update_time{
+        width: 50%;
+    }
+    @media screen and (max-width: 768px) {
+        #all{
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0 auto;
+            border: 1px solid #999;
+            /* background-color: #333; */
+        }
+        #main{
+            width: 100%;
+            height: 100%;
+            margin-left: 0px;
+            margin-right: 0px;
+            font-size: 20px;
+        }
+        #container{
+            max-width: 1200px;
+            height: 30%;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            display: flex-wrap;
+        }
+        h1{
+            width: 100%;
+            text-align: center;
+        }
+        h2{
+            font-size: 20px;
+            text-align: center;
+        }
+        #update_time{
+            width: 100%;
+        }
+
+    }
 </style>
 {% endblock head %}
 
@@ -25,25 +80,32 @@
 
 <div id="sr">
     <div id="all">
-        <div id="title">
-            <h1>短期電力預測結果</h1>
         <div id="main">
             <canvas id="myChart"></canvas>
         </div>
     </div>
-</div>
-<a href="/" style="text-align: center; display: block;">回首頁</a>
-<script>
+    <div id="container">
+        <a href="/" style="text-align: center; display: block;">&lt回首頁</a>
+        <div id="update_time">
+            <h2>更新時間: 20230815T00:00</h2>
+        </div>
+    </div>
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            // 示例数据
+            var data = {{data | tojson | safe}};
+            
+            // 提取时间和行业数据
+            var times = data.map(entry => entry.time);
+            var electricity_predict = data.map(entry => entry.electricity_predict);
+            var industries = data.map(entry => entry.industry);
+            
+            var start_time = Date.parse(times[0]);
+        var end_time = Date.parse(times[times.length-1]);
 
-    document.addEventListener("DOMContentLoaded", function() {
-        // 示例数据
-        var data = {{data | tojson | safe}};
-
-        // 提取时间和行业数据
-        var times = data.map(entry => entry.time);
-        var electricity_predict = data.map(entry => entry.electricity_predict);
-        var industries = data.map(entry => entry.industry);
-
+        start_time = new Date(start_time).toLocaleString();
+        end_time = new Date(end_time).toLocaleString();        
         // 创建折线图
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
@@ -60,10 +122,36 @@
             },
             options: {
                 responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        font: {
+                            size: 20
+                        },
+                        text: industries[0]+start_time+'~'+end_time+'預測結果'
+                    },
+                    
+                },
                 scales: {
                     x:{
                         title: {
-                            text: '預測時間'
+                            display: true,
+                            text: '小時'
+                        },
+                        type: 'time',
+                        time: {
+                            unit: 'hour'
+                        }
+                        },
+                    y:{
+                        ticks:{
+                            font:{
+                                size: 15,
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '瓩'
                         }
                         }
                     }
