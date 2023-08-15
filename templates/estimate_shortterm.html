@@ -89,77 +89,85 @@
         <div id="update_time">
             <h2>更新時間: 20230815T00:00</h2>
         </div>
-    </div>
-    <script>
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            // 示例数据
-            var data = {{data | tojson | safe}};
-            
-            // 提取时间和行业数据
-            var times = data.map(entry => entry.time);
-            var electricity_predict = data.map(entry => entry.electricity_predict);
-            var industries = data.map(entry => entry.industry);
-            
-            var start_time = Date.parse(times[0]);
-        var end_time = Date.parse(times[times.length-1]);
 
-        start_time = new Date(start_time).toLocaleString();
-        end_time = new Date(end_time).toLocaleString();        
-        // 创建折线图
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: times,
-                datasets: [{
-                    label: '電力預測',
-                    data: electricity_predict,
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        font: {
-                            size: 20
-                        },
-                        text: industries[0]+start_time+'~'+end_time+'預測結果'
+
+    </div>
+
+    <script>
+        function drawChart(){
+
+            document.addEventListener("DOMContentLoaded", function() {
+                // 示例数据
+                var data = {{data | tojson | safe}};
+                
+                // 提取时间和行业数据
+                var times = data.map(entry => entry.time);
+                var electricity_predict = data.map(entry => entry.electricity_predict);
+                var industries = data.map(entry => entry.industry);
+                
+                var start_time = Date.parse(times[0]);
+                var end_time = Date.parse(times[times.length-1]);
+                
+                start_time = new Date(start_time).toLocaleString();
+                end_time = new Date(end_time).toLocaleString();        
+                // 创建折线图
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: times,
+                        datasets: [{
+                            label: '電力預測',
+                            data: electricity_predict,
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
                     },
-                    
-                },
-                scales: {
-                    x:{
-                        title: {
-                            display: true,
-                            text: '小時'
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                font: {
+                                    size: 20
+                                },
+                                text: industries[0]+start_time+'~'+end_time+'預測結果'
+                            },
+                            
                         },
-                        type: 'time',
-                        time: {
-                            unit: 'hour'
-                        }
-                        },
-                    y:{
-                        ticks:{
-                            font:{
-                                size: 15,
+                        scales: {
+                            x:{
+                                title: {
+                                    display: true,
+                                    text: '小時'
+                                },
+                                type: 'time',
+                                time: {
+                                    unit: 'hour'
+                                }
+                            },
+                            y:{
+                                title: {
+                                    display: true,
+                                    text: '瓩'
+                                }
                             }
-                        },
-                        title: {
-                            display: true,
-                            text: '瓩'
-                        }
                         }
                     }
-                }
-        });
-    });
+                });
+            });
+            
+    }
+    
+    if (window.innerWidth > 768){
+        Chart.defaults.font.size = 15;
+    }else{
+        Chart.defaults.font.size = 10;
+    }
+    drawChart()
 
-</script>
+    </script>
 
 
 {% endblock content %}

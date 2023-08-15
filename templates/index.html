@@ -2,12 +2,11 @@
 {% block head %}
 {{ super() }}
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
+    h1{
+        font-size: 40px;
+        text-align: center;
+        margin-left: 10px;
     }
-     
     .sidebar {
         height: 100%;
         width: 250px;
@@ -106,7 +105,7 @@
         height: 1100px;
         font-size: 18px;
         /* margin-top: 20px; */
-        /* margin-left: 20px; */
+        margin-left: 10px; 
         border-right: 2px solid #333;
         /* background-color: #333; */
     }
@@ -114,7 +113,6 @@
         float: right;
         width: 65%;
         height: 100%;
-        margin-top: 30px;
         margin-right: 20px;
         /* background-color: #444; */
     }
@@ -152,7 +150,7 @@
     #result{
         float: right;
         width:  45%;
-        height: 55%;
+        height: 50%;
         /* border: 1px solid #333; */
         /* background-color: #333; */
     }
@@ -183,6 +181,7 @@
         width: 700px;
         font-size: 30px;
         margin-left:auto;
+        padding: 10px 0;
     }
     .nav_bar a {
         color: black;
@@ -190,11 +189,21 @@
         margin-left: 20px;
         margin-right: 20px;
         font-size: 25px;
+        padding-left: 30px;
+        padding-right: 30px;
+        transition: background-color 0.3s ease;
+    }
+    .nav_bar a:hover {
+        background-color: #555;
+        color: white;
+    }
+    .nav_bar .active{
+        background-color: #555;
     }
 
     .nav_header{
         display: flex;
-        align-items: center
+        align-items: center;
     }
     ul{
         display:none;
@@ -203,8 +212,10 @@
 
     @media screen and (max-width: 768px) {
         /* 手機版面 */
-        header{
-            font-size: 20px;
+        h1{
+            font-size: 35px;
+            text-align: center;
+            margin-left: 0px;
         }
         #sr{
             max-width: 500x;
@@ -235,6 +246,7 @@
             height: 150px;
             display: flex;
             align-items: center;
+            justify-content: center;
             font-align: center;
             background-color: #20b2aa;
         }
@@ -279,10 +291,13 @@
             width: 100%;
             height:40%;
             border-right: none;
+            margin-left: 0px;
         }
         #con_r{
             width: 100%;
             height: 40%;
+            margin-right: 0px;
+            margin-left: 0px;
         }
         #ser_main{
             width: 100%;
@@ -300,6 +315,8 @@
         #station{
             width: 100%;
             height: 100%;
+            display: flex;
+            justify-content: center;
         }
         #myimage{
             width: 100%;
@@ -314,6 +331,37 @@
         .img-zoom-result{
             display: none;
         }
+
+        /* 基本样式 */
+        .vertical_nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .vertical_nav li {
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .vertical_nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 鼠标悬停效果 */
+        .vertical_nav a:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* 活动链接样式 */
+        .vertical_nav .active a {
+            background-color: #333;
+            color: #fff;
+        }
+
 
           
     }
@@ -392,17 +440,17 @@
 <div id = 'sr'>
     <div id = "all">
         <div class="nav_container">
-            <div class = "nav_header">WEATHERTRICITY</div>
+            <div class = "nav_header"><h1>WEATHERTRICITY</h1></div>
             
             <ul class="vertical_nav">
                 <li><a href="/" >負載預測</a></li>
                 <li><a href="{{ url_for('envintro') }}" >環境介紹</a></li>
-                <li><a href="#" >Maybe 團隊介紹</a></li>
+                <li><a href="{{ url_for('teamintro') }}" >團隊介紹</a></li>
             </ul>
             <div class="nav_bar">
                 <a href="/" >負載預測</a>
                 <a href="{{ url_for('envintro') }}" >環境介紹</a>
-                <a href="#" >Maybe 團隊介紹</a>
+                <a href="{{ url_for('teamintro') }}" >團隊介紹</a>
               </div>
         </div>
         <div id = "main">
@@ -462,6 +510,7 @@
                 
                 </div>
                 <div id="con_r">
+                    <div id="ser_title">測站選擇</div>
                     <div id="map_zone">
                         <div id="station" class="img-zoom-container">
                             <img id ="myimage" src="../static/img/taiwan_cwb_new.png" width="450" height="650">

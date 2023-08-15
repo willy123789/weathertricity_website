@@ -90,6 +90,8 @@
     </div>
 </div>
 <script>
+    function drawChart(){
+
     document.addEventListener("DOMContentLoaded", function() {
         // 示例数据
         var data = {{data | tojson | safe}};
@@ -144,11 +146,6 @@
                         
                     },
                     y:{
-                        ticks:{
-                            font:{
-                                size: 15
-                            }
-                        },
                         title: {
                             display: true,
                             text: '瓩'
@@ -159,6 +156,13 @@
         });
 
     });
+    }
+    if (window.innerWidth > 768){
+        Chart.defaults.font.size = 15;
+    }else{
+        Chart.defaults.font.size = 10;
+    }
+    drawChart();
 </script>
 
 

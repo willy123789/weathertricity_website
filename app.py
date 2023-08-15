@@ -23,13 +23,21 @@ def test():
 def envintro():
     return render_template('envintro.html')
 
+@app.route('/teamintro')
+def teamintro():
+    return render_template('teamintro.html')
+
 @app.route('/shortterm_est', methods=['GET','POST'])
 def get_shortterm_and_plot():
     industry = request.form.get('industry')
     # print('------------------')
     # print(industry)
+    start = int(request.args.get('start', 120))  
+    end = int(request.args.get('end', 145)) 
     data = estimate.get_sterms(industry=industry)
-    return render_template('estimate_shortterm.html',data=data[:24]) #24小時data
+    new_start = start + 24  # 计算新的 start 值
+    new_end = end + 24  # 计算新的 end 值
+    return render_template('estimate_shortterm.html',data=data[start:end],industry=industry, start=start, end=end) #24小時data12
     
 
 @app.route('/longterm_est', methods=['GET','POST'])
